@@ -1,18 +1,73 @@
 ﻿@page "/counter"
-
+@inject INotificationService NotificationService
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
 
+@* <Counter2 Count="@currentCount" RestCount = "ResetCount"></Counter2>  *@
+
+<p>@notifyMessage</p>
 <p role="status">Current count: @currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+    <br>
+    <br>
+<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+  <div class="card-header">@questionText</div>
+  <div class="card-body">
+    <h5 class="card-title">Light card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <form class="was-validated">
+    
+    <div class="form-group">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="gridCheck" bind="@data">
+      <label class="form-check-label" for="gridCheck">
+        Check me out
+      </label>
+    </div>
+    </div>
+
+    <div class="form-check">
+    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" bind="@data" checked>
+    <label class="form-check-label" for="gridRadios1">
+        First radio
+    </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" bind="@data">
+        <label class="form-check-label" for="gridRadios2">
+        Second radio
+        </label>
+    </div>
+
+    </form>
+  </div>
+
+  <br>
+  <p>
+      @data
+  </p>
+</div>
+
 @code {
     private int currentCount = 0;
+    public string data { get; set; } = string.Empty;
+    private string notifyMessage = string.Empty;
+
+    [Parameter]
+    public string? questionText { get; set; }
 
     private void IncrementCount()
     {
         currentCount++;
+        NotificationService.IncrementCounter();
+    }
+
+    private void ResetCount()
+    {
+        currentCount = 0;
+        notifyMessage = "Counter has been reset";
     }
 }
