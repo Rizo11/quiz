@@ -1,0 +1,56 @@
+<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+  <div class="card-header">"question.QuestionText"</div>
+  <div class="card-body">
+    <h5 class="card-title">Light card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
+    <form>
+        <p>@questions</p>
+
+        @foreach (var item in Enum.GetNames(typeof(Question.Colors)))
+        {
+            <div>
+                <input type="radio" name="question1" id="@item" value="@item" @onchange="" checked=@(selectedAnswer.Equals(item,StringComparison.OrdinalIgnoreCase)) />
+                <label for="@item">@item</label>
+            </div>
+        }
+        <div>
+            <label>Selected answer is @selectedAnswer</label>
+        </div>
+        
+        <button type="button" @onclick="@OnSubmit">Submit</button>
+
+    </form>
+
+  </div>
+</div>
+
+<p>@userAnswer, @selectedAnswer</p>
+
+@code
+{
+    [Parameter]
+    public EventCallback<bool>  { get; set; }
+    public string userAnswer { get; set; } = string.Empty;
+    string selectedAnswer = "";
+    public string SelectionChanged(ChangeEventArgs args)
+    {
+        selectedAnswer = args.Value.ToString();
+        return selectedAnswer;
+    }
+
+    Question questions = new Question { QuestionText = "What is the color of the sky" };
+
+
+    public void OnSubmit()
+    { 
+      userAnswer = selectedAnswer;
+    }
+
+    public class Question
+    {
+        public string QuestionText { get; set; }
+        public enum Colors { Red, Green, Blue, Yellow };
+
+    }
+}

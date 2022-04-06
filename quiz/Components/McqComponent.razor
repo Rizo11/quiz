@@ -1,0 +1,60 @@
+@using Entity
+
+<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+  <div class="card-header">"question.QuestionText"</div>
+  <div class="card-body">
+    <h5 class="card-title">Light card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
+    @foreach (var club in ClubList())
+    {
+        <form class="was-validated">
+          <div class="form-group">
+            <div class="form-check">
+              <input type="checkbox" @onchange="eventArgs => { CheckboxClicked(club, eventArgs.Value); }" /> @club<br />
+            </div>
+          </div>
+        </form>
+    }
+
+  </div>
+</div>
+
+
+@foreach (var cl in ClubMember)
+{
+    <p>@cl</p>
+}
+@code {
+
+  [Parameter]
+  public string? question { get; set; }
+
+
+  public List<string> ClubMember { get; set; } = new List<string>();
+  public string CheckboxClicked(string clubID, object checkedValue)
+  {
+      if ((bool)checkedValue)
+      {
+          if (!ClubMember.Contains(clubID))
+          {
+              ClubMember.Add(clubID);
+          }
+      }
+      else
+      {
+          if (ClubMember.Contains(clubID))
+          {
+              ClubMember.Remove(clubID);
+          }
+      }
+  }
+
+  public List<String> ClubList()
+  {
+      List<String> c = new List<String>();
+      c.Add("Clube01");
+      c.Add("Clube02");
+      return c;
+  }
+}
