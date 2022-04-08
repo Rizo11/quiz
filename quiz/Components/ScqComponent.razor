@@ -1,14 +1,15 @@
 @using Entity
+@using Markdig
 <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
   <div class="card-header">Ilmhub</div>
   <div class="card-body">
     <h5 class="card-title">To'g'ri javobni tanlang</h5>
-    <p class="card-text">@question.QuestionText</p>
-      @foreach (var item in question.Answers.Keys)
+    <p class="card-text">@((MarkupString) Preview(question.QuestionText))</p>
+      @foreach (var choise in question.Answers.Keys)
       {
           <div>
-              <input type="radio" name="question1" id="@item" value="@item" @onchange="() => OnSelected(item)" />
-              <label for="@item">@item</label>
+              <input type="radio" name="question1" id="@choise" value="@choise" @onchange="() => OnSelected(choise)" />
+              <label for="@choise">@((MarkupString)Preview(choise))</label>
           </div>
       }
       <button type="button" @onclick="() => OnClickCallback.InvokeAsync(Result)">Submit</button>
@@ -21,6 +22,9 @@
   [Parameter]
   public Question question { get; set; }
   public float Result { get; set; } = -1;
+
+  public string Preview(string text) => Markdown.ToHtml(text);
+
   
   public void OnSelected(string color)
   {

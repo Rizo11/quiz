@@ -1,9 +1,10 @@
 @using Entity
+@using Markdig
 <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
   <div class="card-header">Ilmhub</div>
   <div class="card-body">
     <h5 class="card-title">To'g'ri javobni yozing</h5>
-    <p class="card-text">@question.QuestionText</p>
+    <p class="card-text">@((MarkupString) Preview(question.QuestionText))</p>
     <div>
         <input type="text" name="question1" @bind-value="UInput" @oninput="() => OnSelected()" />
         <button type="button" @onsubmit="() => OnClickCallback.InvokeAsync(Result)">Submit</button>
@@ -23,6 +24,8 @@
   [Parameter]
   public Question question { get; set; }
   
+  public string Preview(string text) => Markdown.ToHtml(text);
+
   public string UInput { get; set; } = string.Empty;
   public float Result { get; set; } = -1;
   

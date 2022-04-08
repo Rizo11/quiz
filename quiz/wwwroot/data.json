@@ -17,7 +17,7 @@
         }
     },
     {
-        "QuestionText": "Qaysi dasturlash tilini bilasiz?",
+        "QuestionText": "Love**is**bold Qaysi dasturlash tilini bilasiz? ",
         "Answers": {
             "Python": true,
             "C++": false,
@@ -28,9 +28,20 @@
         }
     },
     {
-        "QuestionText": "a = 5, b = 10, a + b = ?",
+        "QuestionText": "a = 5, b = 10, a + b = ? I just love **bold text**. I just love __bold text__.",
         "Answers": {
             "15": true
+        }
+    },
+    {
+        "QuestionText": "Love**is**bold *cat*meow This text is **_really important_**. > #### The quarterly results look great! >  > - Revenue was off the chart. > - Profits were higher than ever.",
+        "Answers": {
+            ">  *Everything* is going according to **plan**.": true,
+            "``Use `code` in your Markdown file.``": false,
+            "C": true,
+            "``Java is a great language to learn``": false,
+            "JavaScript": false,
+            "HTML": true
         }
     }
 ]

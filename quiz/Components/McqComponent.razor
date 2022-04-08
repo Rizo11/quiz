@@ -1,17 +1,19 @@
 @using Entity
-
+@using Markdig;
+@using Microsoft.AspNetCore.Components;
+@* @using TestCreater.Models; *@
 <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
   <div class="card-header">Ilmhub</div>
   <div class="card-body">
     <h5 class="card-title">To'g'ri javoblarni tanlang</h5>
-    <p class="card-text">@question.QuestionText</p>
+    <p class="card-text">@((MarkupString) Preview(question.QuestionText))</p>
 
     @foreach (var choise in question.Answers)
     {
         <form class="was-validated">
           <div class="form-group">
             <div class="form-check">
-              <input type="checkbox" @onchange="eventArgs => { CheckboxClicked(choise.Key, choise.Value, eventArgs.Value); }" /> @choise.Key<br />
+              <input type="checkbox" @onchange="eventArgs => { CheckboxClicked(choise.Key, choise.Value, eventArgs.Value); }" /> @((MarkupString) Preview(choise.Key))<br />
             </div>
           </div>
         </form>
@@ -32,6 +34,7 @@
 
   public List<string> UAnswers { get; set; } = new List<string>();
   public float Result { get; set; } = 0;
+  public string Preview(string text) => Markdown.ToHtml(text);
   public void CheckboxClicked(string key, bool val, object checkedValue)
   {
       if ((bool)checkedValue)
