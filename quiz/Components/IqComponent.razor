@@ -1,0 +1,45 @@
+@using Entity
+<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+  <div class="card-header">Ilmhub</div>
+  <div class="card-body">
+    <h5 class="card-title">To'g'ri javobni yozing</h5>
+    <p class="card-text">@question.QuestionText</p>
+    <div>
+        <input type="text" name="question1" @bind-value="UInput" @oninput="() => OnSelected()" />
+        <button type="button" @onsubmit="() => OnClickCallback.InvokeAsync(Result)">Submit</button>
+    </div>
+
+  </div>  
+
+</div>
+
+@UInput
+
+
+@code {
+  [Parameter]
+  public EventCallback<float> OnClickCallback { get; set; }
+  
+  [Parameter]
+  public Question question { get; set; }
+  
+  public string UInput { get; set; } = string.Empty;
+  public float Result { get; set; } = -1;
+  
+  public void OnSelected()
+  {
+    System.Console.WriteLine($"OnSelected {UInput} on selected");
+    if(question.Answers.Keys.Contains(UInput))
+    {
+      Result = 1;
+      System.Console.WriteLine("contains");
+    }
+    else
+    {
+      Result = 0;
+      System.Console.WriteLine("not contains");
+    }
+
+
+  }
+} 

@@ -17,3 +17,18 @@
 }
 
 <h1>@Local</h1> *@
+@page "/fetchdata"
+@using Entity
+Hello
+
+@Questions.Count
+
+@code {
+    public List<Question> Questions { get; set; } = new List<Question>();
+    protected override void OnInitialized()
+    {
+        var http = new HttpClient();
+        var qs = http.GetFromJsonAsync<List<Question>>("data.json").Result;
+        Questions = qs == null ? new List<Question>() : qs;
+    }
+}

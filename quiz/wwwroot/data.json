@@ -1,0 +1,36 @@
+[
+    {
+        "QuestionText": "Ismingiz nima, Azizbek?",
+        "Answers": {
+            "1-variant": false,
+            "2-variant": true,
+            "3-variant": false,
+            "4-variant": false
+        }
+    },
+    {
+        "QuestionText": "Ilmhub qayerda joylashgan",
+        "Answers": {
+            "1-variant": false,
+            "2-variant": false,
+            "3-variant": true
+        }
+    },
+    {
+        "QuestionText": "Qaysi dasturlash tilini bilasiz?",
+        "Answers": {
+            "Python": true,
+            "C++": false,
+            "C": true,
+            "Java": false,
+            "JavaScript": false,
+            "HTML": true
+        }
+    },
+    {
+        "QuestionText": "a = 5, b = 10, a + b = ?",
+        "Answers": {
+            "15": true
+        }
+    }
+]

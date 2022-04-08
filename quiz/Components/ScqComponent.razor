@@ -1,11 +1,9 @@
 @using Entity
 <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-  <div class="card-header">"question.QuestionText"</div>
+  <div class="card-header">Ilmhub</div>
   <div class="card-body">
-    <h5 class="card-title">Light card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-
-      <p>@(question.QuestionText)</p>
+    <h5 class="card-title">To'g'ri javobni tanlang</h5>
+    <p class="card-text">@question.QuestionText</p>
       @foreach (var item in question.Answers.Keys)
       {
           <div>
@@ -24,11 +22,6 @@
   public Question question { get; set; }
   public float Result { get; set; } = -1;
   
-  @* public class Question
-  {
-      public string QuestionText { get; set; }
-      public enum Colors { Red, Green, Blue, Yellow };
-  } *@
   public void OnSelected(string color)
   {
     if(question.Answers[color])

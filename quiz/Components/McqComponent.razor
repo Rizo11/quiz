@@ -1,51 +1,52 @@
-@* @using Entity
+@using Entity
 
 <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-  <div class="card-header">"question.QuestionText"</div>
+  <div class="card-header">Ilmhub</div>
   <div class="card-body">
-    <h5 class="card-title">Light card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <h5 class="card-title">To'g'ri javoblarni tanlang</h5>
+    <p class="card-text">@question.QuestionText</p>
 
-    @foreach (var club in ClubList())
+    @foreach (var choise in question.Answers)
     {
         <form class="was-validated">
           <div class="form-group">
             <div class="form-check">
-              <input type="checkbox" @onchange="eventArgs => { CheckboxClicked(club, eventArgs.Value); }" /> @club<br />
+              <input type="checkbox" @onchange="eventArgs => { CheckboxClicked(choise.Key, choise.Value, eventArgs.Value); }" /> @choise.Key<br />
             </div>
           </div>
         </form>
     }
+    <button type="button" @onclick="() => OnClickCallback.InvokeAsync(Result)">Submit</button>
 
   </div>
 </div>
 
-
-@foreach (var cl in ClubMember)
-{
-    <p>@cl</p>
-}
 @code {
 
   [Parameter]
-  public string? question { get; set; }
+  public EventCallback<float> OnClickCallback { get; set; }
+  
+  [Parameter]
+  public Question question { get; set; }
 
 
-  public List<string> ClubMember { get; set; } = new List<string>();
-  public string CheckboxClicked(string clubID, object checkedValue)
+  public List<string> UAnswers { get; set; } = new List<string>();
+  public float Result { get; set; } = 0;
+  public void CheckboxClicked(string key, bool val, object checkedValue)
   {
       if ((bool)checkedValue)
       {
-          if (!ClubMember.Contains(clubID))
+          if (val && !UAnswers.Contains(key))
           {
-              ClubMember.Add(clubID);
+            UAnswers.Add(key);
+            Result++;
           }
       }
       else
       {
-          if (ClubMember.Contains(clubID))
+          if (UAnswers.Contains(key))
           {
-              ClubMember.Remove(clubID);
+              UAnswers.Remove(key);
           }
       }
   }
@@ -57,4 +58,4 @@
       c.Add("Clube02");
       return c;
   }
-} *@
+}
