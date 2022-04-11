@@ -53,7 +53,7 @@ else
     public List<Question> questions { get; set; } = new();
     public int IndexOfQuestions = 0;
 
-   TimeSpan TimeLeft = new TimeSpan (0,0,15);
+   TimeSpan TimeLeft = new TimeSpan (0,0,55);
     protected override async Task OnInitializedAsync()
     {
         questions = await QReader();
@@ -74,13 +74,15 @@ else
 
     async Task Next()
     {
-        TimeLeft = new TimeSpan(0, 0, 15);
+        TimeLeft = new TimeSpan(0, 0, 55);
         IndexOfQuestions++;
         StateHasChanged();
         await Timer();
     }
     void AddAnswer(int e) 
     {
+        TimeLeft = new TimeSpan(0, 0, 55);
+        IndexOfQuestions++;
         nOfQuestions += 1;
         Score += e; 
     }
