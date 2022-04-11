@@ -3,6 +3,7 @@
 @inherits ComponentBase
 @inject HttpClient Http
 @using Newtonsoft.Json
+@using quiz.Components
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
@@ -25,14 +26,29 @@
         <quiz.Components.McqComponent OnClickCallback="AddAnswer" question="q"/>
     }
 }
+@if(questions.Count == nOfQuestions)
+{
+    <button type="button" @onclick="() => Finish()" > Finish test</button>
 
-<p>@Score</p>
+    @if(ShowResult)
+    {
+        <ResultComponent result="Score"/>
+    }
+}
+else
+{
+    <button  disabled> Finish test</button>
+
+}
+
 
 
 
 @code {
 
-    public float Score { get; set; } = 0;
+    public int Score { get; set; } = 0;
+    public int nOfQuestions { get; set; } = 0;
+    public bool ShowResult { get; set; }
     public Question abc { get; set; } = new Question();
 
     public List<Question> questions { get; set; } = new();
@@ -43,10 +59,10 @@
     }
 
 
-    void AddAnswer(float e) 
-    {   
-        Score += e;
-        Console.WriteLine($"Text: {Score}");   
+    void AddAnswer(int e) 
+    {
+        nOfQuestions += 1;
+        Score += e; 
     }
 
     public async Task<List<Question>> QReader()
@@ -58,6 +74,10 @@
         var qs = JsonConvert.DeserializeObject<List<Question>>(jsonString);
         return qs;
     }
-}
 
+    void Finish()
+    {
+        ShowResult = true;
+    }
+}
 <h1>@Score</h1>

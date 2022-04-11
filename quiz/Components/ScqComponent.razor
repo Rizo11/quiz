@@ -8,20 +8,29 @@
       @foreach (var choise in question.Answers.Keys)
       {
           <div>
-              <input type="radio" name="question1" id="@choise" value="@choise" @onchange="() => OnSelected(choise)" />
+              <input type="radio" name="question1" id="@choise" value="@choise" @onchange="() => OnSelected(choise)"/>
               <label for="@choise">@((MarkupString)Preview(choise))</label>
           </div>
       }
-      <button type="button" @onclick="() => OnClickCallback.InvokeAsync(Result)">Submit</button>
+      @if (Submitted)
+      {
+        <button type="button" disabled> Submit</button>
+      }
+      else
+      {
+        <button type="button" @onclick="() => Submit()"> Submit</button>
+      }
   </div>
 </div>
 @code {
   [Parameter]
-  public EventCallback<float> OnClickCallback { get; set; }
+  public EventCallback<int> OnClickCallback { get; set; }
   
   [Parameter]
   public Question question { get; set; }
-  public float Result { get; set; } = -1;
+  public int Result { get; set; } = 0;
+
+  public bool Submitted { get; set; }
 
   public string Preview(string text) => Markdown.ToHtml(text);
 
@@ -36,5 +45,14 @@
     {
       Result = 0;
     }
+  }
+
+  public void Submit()
+  {
+      if (!Submitted)
+      {
+        Submitted = true;
+        OnClickCallback.InvokeAsync(Result);
+      }
   }
 }

@@ -13,12 +13,28 @@
         <form class="was-validated">
           <div class="form-group">
             <div class="form-check">
-              <input type="checkbox" @onchange="eventArgs => { CheckboxClicked(choise.Key, choise.Value, eventArgs.Value); }" /> @((MarkupString) Preview(choise.Key))<br />
+              @* @if(Submitted)
+              {
+                <input type="checkbox" @onchange="eventArgs => { CheckboxClicked(choise.Key, choise.Value, eventArgs.Value); }" disabled/> @((MarkupString) Preview(choise.Key))<br />
+              }
+              else
+              {
+                <input type="checkbox" @onchange="eventArgs => { CheckboxClicked(choise.Key, choise.Value, eventArgs.Value); }"/> @((MarkupString) Preview(choise.Key))<br />
+              } *@
+              <input type="checkbox" @onchange="eventArgs => { CheckboxClicked(choise.Key, choise.Value, eventArgs.Value); }"/> @((MarkupString) Preview(choise.Key))<br />
+
             </div>
           </div>
         </form>
     }
-    <button type="button" @onclick="() => OnClickCallback.InvokeAsync(Result)">Submit</button>
+    @if (Submitted)
+    {
+      <button type="button" disabled> Submit</button>
+    }
+    else
+    {
+      <button type="button" @onclick="() => Submit()"> Submit</button>
+    }
 
   </div>
 </div>
@@ -26,14 +42,15 @@
 @code {
 
   [Parameter]
-  public EventCallback<float> OnClickCallback { get; set; }
+  public EventCallback<int> OnClickCallback { get; set; }
   
   [Parameter]
-  public Question question { get; set; }
+  public Question question { get; set; } = new();
+  public bool Submitted { get; set; }
 
 
   public List<string> UAnswers { get; set; } = new List<string>();
-  public float Result { get; set; } = 0;
+  public int Result { get; set; } = 0;
   public string Preview(string text) => Markdown.ToHtml(text);
   public void CheckboxClicked(string key, bool val, object checkedValue)
   {
@@ -54,11 +71,12 @@
       }
   }
 
-  public List<String> ClubList()
+  public void Submit()
   {
-      List<String> c = new List<String>();
-      c.Add("Clube01");
-      c.Add("Clube02");
-      return c;
+      if (!Submitted)
+      {
+        Submitted = true;
+        OnClickCallback.InvokeAsync(Result);
+      }
   }
 }
