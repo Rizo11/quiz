@@ -7,25 +7,24 @@
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
-
-@foreach (var q in questions)
+@if(questions.Count() > 0){
+@if(questions[IndexOfQuestions].Answers.Values.Where(a => a == true).Count() == 1)
 {
-    if(q.Answers.Values.Where(a => a == true).Count() == 1)
+    if (questions[IndexOfQuestions].Answers.Keys.Count == 1)
     {
-        if (q.Answers.Keys.Count == 1)
-        {
-            <quiz.Components.IqComponent OnClickCallback="AddAnswer" question="q"/> 
-        }
-        else
-        {
-            <quiz.Components.ScqComponent OnClickCallback="AddAnswer" question="q"/>
-        }
+        <quiz.Components.IqComponent OnClickCallback="AddAnswer" question="questions[IndexOfQuestions]"/> 
     }
     else
     {
-        <quiz.Components.McqComponent OnClickCallback="AddAnswer" question="q"/>
+        <quiz.Components.ScqComponent OnClickCallback="AddAnswer" question="questions[IndexOfQuestions]"/>
     }
 }
+else
+{
+    <quiz.Components.McqComponent OnClickCallback="AddAnswer" question="questions[IndexOfQuestions]"/>
+}
+}
+<button @onclick="() => Next()">Next</button>
 @if(questions.Count == nOfQuestions)
 {
     <button type="button" @onclick="() => Finish()" > Finish test</button>
@@ -44,21 +43,42 @@ else
 
 
 
-@code {
+<p>@TimeLeft</p>
 
+@code {
     public int Score { get; set; } = 0;
     public int nOfQuestions { get; set; } = 0;
     public bool ShowResult { get; set; }
     public Question abc { get; set; } = new Question();
-
     public List<Question> questions { get; set; } = new();
+    public int IndexOfQuestions = 0;
 
+   TimeSpan TimeLeft = new TimeSpan (0,0,15);
     protected override async Task OnInitializedAsync()
     {
         questions = await QReader();
+        await Timer();
     }
 
+   async Task Timer()
+   {
+       while(TimeLeft > new TimeSpan())
+       {
+           await Task.Delay(1000);
+           TimeLeft = TimeLeft.Subtract(new TimeSpan(0, 0, 1));
+            StateHasChanged ();
+       }
+       await Next();
+   }
 
+
+    async Task Next()
+    {
+        TimeLeft = new TimeSpan(0, 0, 15);
+        IndexOfQuestions++;
+        StateHasChanged();
+        await Timer();
+    }
     void AddAnswer(int e) 
     {
         nOfQuestions += 1;
