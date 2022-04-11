@@ -1,9 +1,83 @@
 ﻿@page "/"
-
+@using Entity
+@inherits ComponentBase
+@inject HttpClient Http
+@using Newtonsoft.Json
+@using quiz.Components
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+@foreach (var q in questions)
+{
+    if(q.Answers.Values.Where(a => a == true).Count() == 1)
+    {
+        if (q.Answers.Keys.Count == 1)
+        {
+            <quiz.Components.IqComponent OnClickCallback="AddAnswer" question="q"/> 
+        }
+        else
+        {
+            <quiz.Components.ScqComponent OnClickCallback="AddAnswer" question="q"/>
+        }
+    }
+    else
+    {
+        <quiz.Components.McqComponent OnClickCallback="AddAnswer" question="q"/>
+    }
+}
+@if(questions.Count == nOfQuestions)
+{
+    <button type="button" @onclick="() => Finish()" > Finish test</button>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    @if(ShowResult)
+    {
+        <ResultComponent result="Score"/>
+    }
+}
+else
+{
+    <button  disabled> Finish test</button>
+
+}
+
+
+
+
+@code {
+
+    public int Score { get; set; } = 0;
+    public int nOfQuestions { get; set; } = 0;
+    public bool ShowResult { get; set; }
+    public Question abc { get; set; } = new Question();
+
+    public List<Question> questions { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        questions = await QReader();
+    }
+
+
+    void AddAnswer(int e) 
+    {
+        nOfQuestions += 1;
+        Score += e; 
+    }
+
+    public async Task<List<Question>> QReader()
+    {
+        string jsonPlace = string.Empty;
+        var json = await Http.GetAsync(@"data.json");
+        var jsonString = await json.Content.ReadAsStringAsync();
+        System.Console.WriteLine(jsonString);
+        var qs = JsonConvert.DeserializeObject<List<Question>>(jsonString);
+        return qs;
+    }
+
+    void Finish()
+    {
+        ShowResult = true;
+    }
+}
+<h1>@Score</h1>

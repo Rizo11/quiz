@@ -1,0 +1,47 @@
+[
+    {
+        "QuestionText": "Ismingiz nima, Azizbek?",
+        "Answers": {
+            "1-variant": false,
+            "2-variant": true,
+            "3-variant": false,
+            "4-variant": false
+        }
+    },
+    {
+        "QuestionText": "Ilmhub qayerda joylashgan",
+        "Answers": {
+            "1-variant": false,
+            "2-variant": false,
+            "3-variant": true
+        }
+    },
+    {
+        "QuestionText": "Love**is**bold Qaysi dasturlash tilini bilasiz? ",
+        "Answers": {
+            "Python": true,
+            "C++": false,
+            "C": true,
+            "Java": false,
+            "JavaScript": false,
+            "HTML": true
+        }
+    },
+    {
+        "QuestionText": "a = 5, b = 10, a + b = ? I just love **bold text**. I just love __bold text__.",
+        "Answers": {
+            "15": true
+        }
+    },
+    {
+        "QuestionText": "Love**is**bold *cat*meow This text is **_really important_**. > #### The quarterly results look great! >  > - Revenue was off the chart. > - Profits were higher than ever.",
+        "Answers": {
+            ">  *Everything* is going according to **plan**.": true,
+            "``Use `code` in your Markdown file.``": false,
+            "C": true,
+            "``Java is a great language to learn``": false,
+            "JavaScript": false,
+            "HTML": true
+        }
+    }
+]

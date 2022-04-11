@@ -1,0 +1,50 @@
+@using Entity
+@using Markdig
+<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+  <div class="card-header">Ilmhub</div>
+  <div class="card-body">
+    <h5 class="card-title">To'g'ri javobni yozing</h5>
+    <p class="card-text">@((MarkupString) Preview(question.QuestionText))</p>
+    <div>
+        <input type="text" name="question1" @bind-value="UInput" />
+        <br>
+        @if(Submitted)
+        {
+          <button type="button"  disabled>Submit</button>
+        }
+        else
+        {
+          <button type="button" @onclick="() => OnSubmit()" > Submit</button>
+        }
+    </div>
+  </div>  
+</div>
+
+
+@code {
+  [Parameter]
+  public EventCallback<int> OnClickCallback { get; set; }
+  
+  [Parameter]
+  public Question question { get; set; }
+  
+  public string Preview(string text) => Markdown.ToHtml(text);
+
+  public string UInput { get; set; } = string.Empty;
+  public int Result { get; set; } = 0;
+  public bool Submitted { get; set; }
+  
+  public void OnSubmit()
+  {
+    Submitted = true;
+    if(question.Answers.Keys.Contains(UInput))
+    {
+      Result = 1;
+    }
+    else
+    {
+      Result = 0;
+    }
+    OnClickCallback.InvokeAsync(Result);
+  }
+} 

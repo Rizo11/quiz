@@ -1,0 +1,14 @@
+@* <quiz.Components.ScqComponent OnClickCallback="AddAnswer"/>
+
+
+
+@code {
+    public string Local { get; set; }
+    void AddAnswer(string e) 
+    {   
+        Local = e.ToString();
+        Console.WriteLine($"Text: {Local}");   
+    }
+}
+
+<h1>@Local</h1> *@
